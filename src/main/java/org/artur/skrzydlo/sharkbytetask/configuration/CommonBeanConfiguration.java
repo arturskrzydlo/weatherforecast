@@ -1,25 +1,26 @@
-package org.artur.skrzydlo.sharkbytetask.config;
+package org.artur.skrzydlo.sharkbytetask.configuration;
 
 import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.EnumSet;
 
-/**
- * Created by artur.skrzydlo on 2017-05-13.
- */
 @Configuration
-@EnableAutoConfiguration
-public class TestConfiguration {
-
-
+public class CommonBeanConfiguration {
 
     @Bean
-    public com.jayway.jsonpath.Configuration configuration(){
+    public RestTemplate restTemplate() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate;
+    }
+
+    @Bean
+    public com.jayway.jsonpath.Configuration getConfiguration() {
 
         return com.jayway.jsonpath.Configuration.builder()
                                                 .jsonProvider(new JacksonJsonProvider())
@@ -27,6 +28,5 @@ public class TestConfiguration {
                                                 .options(EnumSet.noneOf(Option.class))
                                                 .build();
     }
-
 
 }

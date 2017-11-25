@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SharkbytetaskApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(SharkbytetaskApplication.class, args);
+
 	}
 }
