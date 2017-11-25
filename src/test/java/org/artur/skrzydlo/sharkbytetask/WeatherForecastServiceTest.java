@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class WeatherForecastServiceTest {
     }
 
     @Test
-    private void testIfWeatherForecastIsAvailable() {
+    public void testIfWeatherForecastIsAvailable() {
 
         String jsonResponse = "        {\n"
                 + "            \"list\": [\n"
@@ -72,6 +73,18 @@ public class WeatherForecastServiceTest {
         Mockito.verify(restTemplate,Mockito.times(1)).getForEntity(RESOURCE_URL+"q=London,us&appid="+apiKey,String.class);
         Assertions.assertThat(weatherForecast).isNotNull().isNotEmpty();
 
+    }
+
+    @Test(expected = RestClientException.class)
+    public void testIfWeatherForecastIsNotAvailable() throws RestClientException{
+
+
+        Mockito.when(restTemplate.getForEntity(RESOURCE_URL+"q=London,us&appid="+apiKey,String.class)).thenThrow(new RestClientException("test message"));
+
+        List<WeatherForecastDTO> weatherForecast = weatherForecastService.get5daysWeatherForecastByCity("London", "us");
+
+        Mockito.verifyZeroInteractions(restTemplate);
+        Assertions.assertThat(weatherForecast).isNull();
     }
 
 }
