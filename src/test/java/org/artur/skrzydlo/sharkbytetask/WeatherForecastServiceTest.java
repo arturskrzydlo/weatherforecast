@@ -23,10 +23,12 @@ import java.util.List;
 @SpringBootTest
 public class WeatherForecastServiceTest {
 
-    private static final String RESOURCE_URL="http://api.openweathermap.org/data/2.5/forecast?";
 
     @Value("${weather.api.appid}")
     private static String apiKey;
+
+    @Value("${weather.api.url}}")
+    private static String apiURL;
 
     @InjectMocks
     private WeatherForecastService weatherForecastService;
@@ -66,11 +68,11 @@ public class WeatherForecastServiceTest {
                 + "        }";
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-        Mockito.when(restTemplate.getForEntity(RESOURCE_URL+"q=London,us&appid="+apiKey,String.class)).thenReturn(responseEntity);
+        Mockito.when(restTemplate.getForEntity(apiURL+"q=London,us&appid="+apiKey,String.class)).thenReturn(responseEntity);
 
         List<WeatherForecastDTO> weatherForecast = weatherForecastService.get5daysWeatherForecastByCity("London", "us");
 
-        Mockito.verify(restTemplate,Mockito.times(1)).getForEntity(RESOURCE_URL+"q=London,us&appid="+apiKey,String.class);
+        Mockito.verify(restTemplate,Mockito.times(1)).getForEntity(apiURL+"q=London,us&appid="+apiKey,String.class);
         Assertions.assertThat(weatherForecast).isNotNull().isNotEmpty();
 
     }
@@ -79,7 +81,7 @@ public class WeatherForecastServiceTest {
     public void testIfWeatherForecastIsNotAvailable() throws RestClientException{
 
 
-        Mockito.when(restTemplate.getForEntity(RESOURCE_URL+"q=London,us&appid="+apiKey,String.class)).thenThrow(new RestClientException("test message"));
+        Mockito.when(restTemplate.getForEntity(apiURL+"q=London,us&appid="+apiKey,String.class)).thenThrow(new RestClientException("test message"));
 
         List<WeatherForecastDTO> weatherForecast = weatherForecastService.get5daysWeatherForecastByCity("London", "us");
 
