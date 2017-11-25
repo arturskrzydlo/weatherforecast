@@ -1,6 +1,5 @@
-package org.artur.skrzydlo.sharkbytetask.integration;
+package org.artur.skrzydlo.sharkbytetask;
 
-import org.artur.skrzydlo.sharkbytetask.WeatherForecastAPI;
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +29,10 @@ public class CharControllerTest {
     private WeatherForecastAPI weatherForecastAPI;
 
     private final static int WEATHER_FREQUENCY_IN_HOURS=3;
+    final int NUMBER_OF_DAYS=5;
+    final int HOURS_DAY=24;
+
+    final int numberOfWeatherForecasts = NUMBER_OF_DAYS * (HOURS_DAY / WEATHER_FREQUENCY_IN_HOURS);
 
 
     @Test
@@ -37,10 +40,7 @@ public class CharControllerTest {
 
         String city = "Washington";
         String countryCode="us";
-        final int NUMBER_OF_DAYS=5;
-        final int HOURS_DAY=24;
 
-        final int numberOfWeatherForecasts = NUMBER_OF_DAYS * (HOURS_DAY / WEATHER_FREQUENCY_IN_HOURS);
         Mockito.when(weatherForecastAPI.get5daysWeatherForecastByCity(city,countryCode)).thenReturn(Collections.nCopies(
                 numberOfWeatherForecasts,new WeatherForecastDTO()));
 
@@ -52,4 +52,25 @@ public class CharControllerTest {
 
         Mockito.verify(weatherForecastAPI,Mockito.times(1)).get5daysWeatherForecastByCity(city,countryCode);
     }
+
+    @Test
+    public void returnUnproccesableEntityWhenNonExistingNameOfCityHasBeenSpecified() throws Exception {
+
+        String city = "Katowice";
+        String countryCode="pl";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/"+city))
+                    .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.appierror.status").isNotEmpty())
+                    .andExpect(jsonPath("$.appierror.timestamp").isNotEmpty())
+                    .andExpect(jsonPath("$.appierror.message").isNotEmpty())
+
+                    .andReturn();
+
+
+        Mockito.verifyZeroInteractions(weatherForecastAPI);
+
+    }
+
 }
