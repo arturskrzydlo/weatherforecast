@@ -3,6 +3,7 @@ package org.artur.skrzydlo.sharkbytetask;
 import com.jayway.jsonpath.Configuration;
 import org.artur.skrzydlo.sharkbytetask.config.TestConfiguration;
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
+import org.artur.skrzydlo.sharkbytetask.services.WeatherForecastService;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class WeatherForecastServiceTest {
     @Value("${weather.api.appid}")
     private static String apiKey;
 
-    @Value("${weather.api.url}}")
+    @Value("${weather.api.appid}")
     private static String apiURL;
 
     @InjectMocks

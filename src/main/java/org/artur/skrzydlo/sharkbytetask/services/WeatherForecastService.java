@@ -1,4 +1,4 @@
-package org.artur.skrzydlo.sharkbytetask;
+package org.artur.skrzydlo.sharkbytetask.services;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;

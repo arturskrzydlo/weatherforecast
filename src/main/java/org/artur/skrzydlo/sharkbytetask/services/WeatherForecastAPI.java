@@ -1,4 +1,4 @@
-package org.artur.skrzydlo.sharkbytetask;
+package org.artur.skrzydlo.sharkbytetask.services;
 
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
 
