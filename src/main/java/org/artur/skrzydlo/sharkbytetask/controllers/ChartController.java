@@ -31,7 +31,7 @@ public class ChartController {
         }catch (IllegalArgumentException exc){
             throw new NotExistingCityException(cityName);
         }
-        return weatherForecastAPI.get5daysWeatherForecastByCity(cityName,cityWithCountryCode.getCountryCode());
+        return weatherForecastAPI.get5daysWeatherForecastByCity(cityWithCountryCode.toString(),cityWithCountryCode.getCountryCode());
     }
 
 

@@ -30,7 +30,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handeException(Exception exc){
+    protected ResponseEntity<Object> handleException(Exception exc){
 
         ApiError apiError = new ApiError(HttpStatus.UNPROCESSABLE_ENTITY);
         apiError.setMessage(exc.getMessage());

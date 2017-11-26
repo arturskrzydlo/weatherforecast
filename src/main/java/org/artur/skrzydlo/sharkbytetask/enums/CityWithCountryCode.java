@@ -3,7 +3,7 @@ package org.artur.skrzydlo.sharkbytetask.enums;
 public enum CityWithCountryCode {
 
     LONDON("us"),
-    NEWYORK("us"),
+    NEW_YORK("us"),
     WASHINGTON("us");
 
     private String countryCode;
@@ -13,7 +13,9 @@ public enum CityWithCountryCode {
     }
 
     @Override public String toString() {
-        return this.name().toLowerCase().substring(0,1).toUpperCase();
+
+
+        return this.name().substring(0,1).toUpperCase()+this.name().toLowerCase().substring(1).replace("_"," ");
     }
 
     public String getCountryCode() {
