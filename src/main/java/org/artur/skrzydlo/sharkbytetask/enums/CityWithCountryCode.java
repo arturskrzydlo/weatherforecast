@@ -8,8 +8,7 @@ public enum CityWithCountryCode {
 
     LONDON("gb"),
     NEW_YORK("us"),
-    WASHINGTON("us"),
-    TurkemnistadorWspanialy("us");
+    WASHINGTON("us");
 
     private String countryCode;
 
