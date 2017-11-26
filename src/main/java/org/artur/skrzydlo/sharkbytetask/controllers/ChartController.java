@@ -27,7 +27,7 @@ public class ChartController {
         CityWithCountryCode cityWithCountryCode;
 
         try{
-            cityWithCountryCode =  CityWithCountryCode.valueOf(cityName.toUpperCase());
+            cityWithCountryCode =  CityWithCountryCode.getCityByName(cityName);
         }catch (IllegalArgumentException exc){
             throw new NotExistingCityException(cityName);
         }

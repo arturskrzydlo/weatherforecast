@@ -7,7 +7,7 @@ import java.text.MessageFormat;
 public class NotExistingCityException extends Exception{
 
     private String cityChecked;
-    private static final String MESSAGE="Can't get weather forecast for {0}. Choose one from these cities : "+ CityWithCountryCode.values();
+    private static final String MESSAGE="Cant get weather forecast for {0}. Choose one from these cities : "+ CityWithCountryCode.getListOfCities();
 
     public NotExistingCityException(String cityChecked){
         this.cityChecked=cityChecked;

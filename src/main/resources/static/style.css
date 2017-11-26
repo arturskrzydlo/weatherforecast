@@ -1,0 +1,46 @@
+body {
+    margin: 60px auto;
+
+}
+
+h1 {
+    font-size: 3em;
+    font-family: 'Helvetica', 'Arial', 'Sans-Serif';
+}
+
+h2 {
+    text-align: center;
+}
+
+p, button, input {
+    font-size: 1.5em;
+    line-height: 1.4em;
+    color: #333;
+    margin-bottom: 1em;
+}
+
+.error {
+    width: 1036px;
+    border: 1px solid darkred;
+    height: 50px;
+    margin-top: 20px;
+    background-color: #ffbeb4;
+    color: darkred;
+    line-height: 50px;
+    vertical-align: middle;
+    padding-left: 20px;
+    display: none;
+}
+
+
+#actionPanel {
+    text-align: center;
+}
+
+.selectCity {
+    width: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}
+

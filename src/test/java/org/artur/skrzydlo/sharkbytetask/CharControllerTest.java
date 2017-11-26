@@ -1,6 +1,7 @@
 package org.artur.skrzydlo.sharkbytetask;
 
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
+import org.artur.skrzydlo.sharkbytetask.enums.CityWithCountryCode;
 import org.artur.skrzydlo.sharkbytetask.services.WeatherForecastAPI;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,10 +91,9 @@ public class CharControllerTest {
     @Test
     public void testRequestPerMinuteLimit() throws Exception {
 
-        String city = "Washington";
-        String countryCode = "us";
+        CityWithCountryCode cityWithCountryCode = CityWithCountryCode.WASHINGTON;
 
-        Mockito.when(weatherForecastAPI.get5daysWeatherForecastByCity(city, countryCode))
+        Mockito.when(weatherForecastAPI.get5daysWeatherForecastByCity(cityWithCountryCode.toString(), cityWithCountryCode.getCountryCode()))
                .thenReturn(Collections.nCopies(
                        numberOfWeatherForecasts, new WeatherForecastDTO()));
 
@@ -101,10 +101,10 @@ public class CharControllerTest {
             try {
 
                 if (i == numberOfRequestPerMinute) {
-                    mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + city))
+                    mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithCountryCode.toString()))
                            .andExpect(MockMvcResultMatchers.status().isTooManyRequests());
                 } else {
-                    mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + city))
+                    mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithCountryCode.toString()))
                            .andExpect(MockMvcResultMatchers.status().isOk());
                 }
             } catch (Exception e) {

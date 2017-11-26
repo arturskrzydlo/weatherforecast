@@ -1,10 +1,11 @@
 package org.artur.skrzydlo.sharkbytetask.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
+import org.artur.skrzydlo.sharkbytetask.utils.LocalDateTimeSerializer;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ class ApiError {
 
    private HttpStatus status;
 
-   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+   @JsonSerialize(using = LocalDateTimeSerializer.class)
    private LocalDateTime timestamp;
    private String message;
    private List<ApiSubError> subErrors;
