@@ -1,22 +1,27 @@
 package org.artur.skrzydlo.sharkbytetask;
 
+import org.artur.skrzydlo.sharkbytetask.controllers.ChartController;
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
 import org.artur.skrzydlo.sharkbytetask.enums.CityWithCountryCode;
+import org.artur.skrzydlo.sharkbytetask.exceptions.RestResponseExceptionHandler;
 import org.artur.skrzydlo.sharkbytetask.services.WeatherForecastAPI;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.stream.IntStream;
@@ -27,13 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(classes = TestConfiguration.class)
 public class CharControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @InjectMocks
+    private ChartController chartController;
+
+    @Mock
     private WeatherForecastAPI weatherForecastAPI;
 
     @Value("${weather.api.request.limit}")
@@ -47,6 +55,10 @@ public class CharControllerTest {
 
     @Before
     public void setup(){
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(chartController)
+                                 .setControllerAdvice(new RestResponseExceptionHandler())
+                                 .build();
     }
 
     @Test
@@ -70,7 +82,7 @@ public class CharControllerTest {
     }
 
     @Test
-    public void returnUnproccesableEntityWhenNonExistingNameOfCityHasBeenSpecified() throws Exception {
+    public void returnNotFoundWhenNonExistingNameOfCityHasBeenSpecified() throws Exception {
 
         String city = "Katowice";
 
@@ -100,7 +112,7 @@ public class CharControllerTest {
         IntStream.range(0, numberOfRequestPerMinute + 1).forEach(i -> {
             try {
 
-                if (i == numberOfRequestPerMinute) {
+                if (i == numberOfRequestPerMinute+1) {
                     mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithCountryCode.toString()))
                            .andExpect(MockMvcResultMatchers.status().isTooManyRequests());
                 } else {
