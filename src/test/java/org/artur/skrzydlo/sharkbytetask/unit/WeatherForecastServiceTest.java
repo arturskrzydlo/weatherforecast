@@ -1,4 +1,4 @@
-package org.artur.skrzydlo.sharkbytetask;
+package org.artur.skrzydlo.sharkbytetask.unit;
 
 import com.jayway.jsonpath.Configuration;
 import org.artur.skrzydlo.sharkbytetask.config.TestConfiguration;

@@ -1,4 +1,4 @@
-package org.artur.skrzydlo.sharkbytetask;
+package org.artur.skrzydlo.sharkbytetask.unit;
 
 import org.artur.skrzydlo.sharkbytetask.controllers.ChartController;
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = TestConfiguration.class)
+@ActiveProfiles
 public class CharControllerTest {
 
     private MockMvc mockMvc;

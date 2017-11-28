@@ -1,4 +1,4 @@
-package org.artur.skrzydlo.sharkbytetask;
+package org.artur.skrzydlo.sharkbytetask.unit;
 
 import org.artur.skrzydlo.sharkbytetask.enums.CityWithCountryCode;
 import org.artur.skrzydlo.sharkbytetask.services.WeatherForecastAPI;
