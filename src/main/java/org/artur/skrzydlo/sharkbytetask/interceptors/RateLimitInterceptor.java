@@ -3,6 +3,7 @@ package org.artur.skrzydlo.sharkbytetask.interceptors;
 import org.artur.skrzydlo.sharkbytetask.services.RateLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -24,7 +25,7 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
 
         if (request.getMethod().equals(HttpMethod.GET.name()) && !rateLimitService.validateLimit()) {
 
-            response.sendError(429, "Rate limit exceeded");
+            response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded");
             return false;
         }
 
