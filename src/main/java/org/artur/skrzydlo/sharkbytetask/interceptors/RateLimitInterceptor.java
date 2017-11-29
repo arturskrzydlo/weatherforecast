@@ -15,7 +15,6 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private RateLimitService rateLimitService;
 
-
     @Override
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler)
@@ -23,12 +22,11 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
 
         rateLimitService.incrementLimit();
 
-        if(request.getMethod().equals(HttpMethod.GET.name()) && !rateLimitService.validateLimit()){
+        if (request.getMethod().equals(HttpMethod.GET.name()) && !rateLimitService.validateLimit()) {
 
-          response.sendError(429, "Rate limit exceeded");
-          return false;
+            response.sendError(429, "Rate limit exceeded");
+            return false;
         }
-
 
         return true;
     }

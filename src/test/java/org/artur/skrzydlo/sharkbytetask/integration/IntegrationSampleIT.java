@@ -11,8 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class IntegrationSampleIT {
 
     @Test
-    public void sampleTest(){
-
+    public void sampleTest() {
 
     }
 }

@@ -8,9 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class SharkbytetaskApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		SpringApplication.run(SharkbytetaskApplication.class, args);
+        SpringApplication.run(SharkbytetaskApplication.class, args);
 
-	}
+    }
 }

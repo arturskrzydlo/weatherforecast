@@ -13,12 +13,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/cities")
 public class CitiesController {
 
-
     @GetMapping("")
-    public List<String> citiesNames(){
+    public List<String> citiesNames() {
 
         return Arrays.stream(CityWithCountryCode.values())
-              .map(city -> city.toString()).collect(Collectors.toList());
+                     .map(city -> city.toString()).collect(Collectors.toList());
     }
 
 }

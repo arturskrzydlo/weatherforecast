@@ -25,10 +25,10 @@ public class WeatherForecastDTO {
     private LocalDateTime date;
 
     @JsonProperty("main")
-    private void unpackNested(Map<String,String> main) {
+    private void unpackNested(Map<String, String> main) {
         this.temperature = Double.valueOf(main.get("temp"));
-        this.pressure =  Double.valueOf(main.get("pressure"));
-        this.humidity =  Integer.valueOf(main.get("humidity"));
+        this.pressure = Double.valueOf(main.get("pressure"));
+        this.humidity = Integer.valueOf(main.get("humidity"));
     }
 
 }

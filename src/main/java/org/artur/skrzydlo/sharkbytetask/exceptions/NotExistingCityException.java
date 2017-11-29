@@ -4,18 +4,20 @@ import org.artur.skrzydlo.sharkbytetask.enums.CityWithCountryCode;
 
 import java.text.MessageFormat;
 
-public class NotExistingCityException extends Exception{
+public class NotExistingCityException extends Exception {
 
     private String cityChecked;
-    private static final String MESSAGE="Cant get weather forecast for {0}. Choose one from these cities : "+ CityWithCountryCode.getListOfCities();
+    private static final String MESSAGE =
+            "Cant get weather forecast for {0}. Choose one from these cities : " + CityWithCountryCode
+                    .getListOfCities();
 
-    public NotExistingCityException(String cityChecked){
-        this.cityChecked=cityChecked;
+    public NotExistingCityException(String cityChecked) {
+        this.cityChecked = cityChecked;
     }
 
     @Override
     public String getMessage() {
-        return MessageFormat.format(MESSAGE,cityChecked);
+        return MessageFormat.format(MESSAGE, cityChecked);
     }
 
     public String getCityChecked() {

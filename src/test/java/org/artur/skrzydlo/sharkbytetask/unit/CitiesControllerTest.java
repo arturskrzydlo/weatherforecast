@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 public class CitiesControllerTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -37,6 +36,5 @@ public class CitiesControllerTest {
                     .andReturn();
 
     }
-
 
 }

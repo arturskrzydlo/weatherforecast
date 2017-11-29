@@ -12,8 +12,7 @@ public class RateLimitServiceImpl implements RateLimitService {
     @Value("${weather.api.request.limit}")
     private int numberOfRequestPerMinute;
 
-    private SimpleEntry<String,Integer> numberOfRequestsCache = new SimpleEntry<String, Integer>("Requests",0);
-
+    private SimpleEntry<String, Integer> numberOfRequestsCache = new SimpleEntry<String, Integer>("Requests", 0);
 
     @Scheduled(cron = "0 */1 * * * ?")
     public void resetCache() {
@@ -21,10 +20,10 @@ public class RateLimitServiceImpl implements RateLimitService {
     }
 
     public void incrementLimit() {
-        numberOfRequestsCache.setValue(numberOfRequestsCache.getValue()+1);
+        numberOfRequestsCache.setValue(numberOfRequestsCache.getValue() + 1);
     }
 
-    public boolean validateLimit(){
+    public boolean validateLimit() {
         return numberOfRequestsCache.getValue() <= numberOfRequestPerMinute;
     }
 }

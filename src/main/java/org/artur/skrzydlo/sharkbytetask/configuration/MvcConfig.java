@@ -11,16 +11,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan("org.artur.skrzydlo.sharkbytetask")
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-
     @Bean
-    public RateLimitInterceptor rateLimitInterceptor(){
+    public RateLimitInterceptor rateLimitInterceptor() {
         return new RateLimitInterceptor();
     }
 
     @Override public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimitInterceptor());
     }
-
-
 
 }

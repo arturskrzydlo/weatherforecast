@@ -1,4 +1,3 @@
-
 var cityName;
 var tempCanvas = document.getElementById("tempChart").getContext("2d");
 var pressureCanvas = document.getElementById("pressureChart").getContext("2d");
@@ -28,15 +27,14 @@ $(document).ready(function () {
 });
 
 
-
 function handleError(responeJSON) {
 
 
-    if (responeJSON.subErrors == undefined){
+    if (responeJSON.subErrors == undefined) {
         $("#errorMessages").text(responeJSON.message);
-    }else{
+    } else {
         var messages = "";
-        $(responeJSON.subErrors).each(function(index, item){
+        $(responeJSON.subErrors).each(function (index, item) {
             messages = message + item.message + "\n";
         });
 
@@ -51,7 +49,6 @@ function clearError() {
     $("#errorMessages").text("");
     $("#errorMessages").css("display", "none");
 }
-
 
 
 function cityChange() {
@@ -154,8 +151,6 @@ function getWeatherForecast(cityName) {
                     }
                 }
             });
-
-
 
 
         },

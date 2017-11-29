@@ -8,8 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@AllArgsConstructor
-class ApiValidationError extends ApiSubError {
+@AllArgsConstructor class ApiValidationError extends ApiSubError {
     private String object;
     private String field;
     private Object rejectedValue;

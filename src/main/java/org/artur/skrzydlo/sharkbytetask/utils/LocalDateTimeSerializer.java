@@ -12,13 +12,12 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
     private static final long serialVersionUID = 1L;
 
-    public LocalDateTimeSerializer(){
+    public LocalDateTimeSerializer() {
         super(LocalDateTime.class);
     }
 
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp) throws IOException
-    {
+    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp) throws IOException {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         gen.writeString(value.format(dateTimeFormatter));
     }

@@ -16,10 +16,8 @@ import java.util.EnumSet;
 @EnableAutoConfiguration
 public class TestConfiguration {
 
-
-
     @Bean
-    public com.jayway.jsonpath.Configuration configuration(){
+    public com.jayway.jsonpath.Configuration configuration() {
 
         return com.jayway.jsonpath.Configuration.builder()
                                                 .jsonProvider(new JacksonJsonProvider())
@@ -27,6 +25,5 @@ public class TestConfiguration {
                                                 .options(EnumSet.noneOf(Option.class))
                                                 .build();
     }
-
 
 }

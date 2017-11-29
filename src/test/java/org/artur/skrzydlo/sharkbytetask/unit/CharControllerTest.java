@@ -56,7 +56,7 @@ public class CharControllerTest {
     final int numberOfWeatherForecasts = NUMBER_OF_DAYS * (HOURS_DAY / WEATHER_FREQUENCY_IN_HOURS);
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(chartController)
                                  .setControllerAdvice(new RestResponseExceptionHandler())
@@ -72,7 +72,6 @@ public class CharControllerTest {
         Mockito.when(weatherForecastAPI.get5daysWeatherForecastByCity(city, countryCode))
                .thenReturn(Collections.nCopies(
                        numberOfWeatherForecasts, new WeatherForecastDTO()));
-
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + city))
                     .andExpect(MockMvcResultMatchers.status().isOk())
@@ -107,14 +106,15 @@ public class CharControllerTest {
 
         CityWithCountryCode cityWithCountryCode = CityWithCountryCode.WASHINGTON;
 
-        Mockito.when(weatherForecastAPI.get5daysWeatherForecastByCity(cityWithCountryCode.toString(), cityWithCountryCode.getCountryCode()))
+        Mockito.when(weatherForecastAPI
+                .get5daysWeatherForecastByCity(cityWithCountryCode.toString(), cityWithCountryCode.getCountryCode()))
                .thenReturn(Collections.nCopies(
                        numberOfWeatherForecasts, new WeatherForecastDTO()));
 
         IntStream.range(0, numberOfRequestPerMinute + 1).forEach(i -> {
             try {
 
-                if (i == numberOfRequestPerMinute+1) {
+                if (i == numberOfRequestPerMinute + 1) {
                     mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithCountryCode.toString()))
                            .andExpect(MockMvcResultMatchers.status().isTooManyRequests());
                 } else {

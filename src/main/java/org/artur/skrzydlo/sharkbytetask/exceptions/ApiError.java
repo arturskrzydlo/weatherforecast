@@ -14,39 +14,37 @@ import java.util.List;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonRootName("apierror")
-class ApiError {
+@JsonRootName("apierror") class ApiError {
 
-   private HttpStatus status;
+    private HttpStatus status;
 
-   @JsonSerialize(using = LocalDateTimeSerializer.class)
-   private LocalDateTime timestamp;
-   private String message;
-   private List<ApiSubError> subErrors;
-   private String debugMessage;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime timestamp;
+    private String message;
+    private List<ApiSubError> subErrors;
+    private String debugMessage;
 
-   private ApiError() {
-       timestamp = LocalDateTime.now();
-   }
+    private ApiError() {
+        timestamp = LocalDateTime.now();
+    }
 
-   ApiError(HttpStatus status) {
-       this();
-       this.status = status;
-   }
+    ApiError(HttpStatus status) {
+        this();
+        this.status = status;
+    }
 
-   ApiError(HttpStatus status, Throwable ex) {
-       this();
-       this.status = status;
-       this.message = "Unexpected error";
-       this.debugMessage = ex.getLocalizedMessage();
-   }
+    ApiError(HttpStatus status, Throwable ex) {
+        this();
+        this.status = status;
+        this.message = "Unexpected error";
+        this.debugMessage = ex.getLocalizedMessage();
+    }
 
-   ApiError(HttpStatus status, String message, Throwable ex) {
-       this();
-       this.status = status;
-       this.message = message;
-       this.debugMessage = ex.getLocalizedMessage();
-   }
-
+    ApiError(HttpStatus status, String message, Throwable ex) {
+        this();
+        this.status = status;
+        this.message = message;
+        this.debugMessage = ex.getLocalizedMessage();
+    }
 
 }

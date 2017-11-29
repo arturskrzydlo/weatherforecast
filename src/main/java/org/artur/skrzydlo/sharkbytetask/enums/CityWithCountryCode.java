@@ -38,6 +38,6 @@ public enum CityWithCountryCode {
                 filter(city -> city.toString().toLowerCase().equals(cityName.toLowerCase()))
                                                      .findFirst();
 
-        return result.orElseThrow(() -> new IllegalArgumentException(cityName +" is not valid city name"));
+        return result.orElseThrow(() -> new IllegalArgumentException(cityName + " is not valid city name"));
     }
 }

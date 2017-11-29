@@ -27,7 +27,6 @@ import java.util.List;
 @ContextConfiguration(classes = TestConfiguration.class)
 public class WeatherForecastServiceTest {
 
-
     @Value("${weather.api.appid}")
     private static String apiKey;
 
@@ -44,7 +43,7 @@ public class WeatherForecastServiceTest {
     private Configuration configuration;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -75,20 +74,22 @@ public class WeatherForecastServiceTest {
                 + "        }";
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-        Mockito.when(restTemplate.getForEntity(apiURL + "?q=London,us&appid=" + apiKey,String.class)).thenReturn(responseEntity);
+        Mockito.when(restTemplate.getForEntity(apiURL + "?q=London,us&appid=" + apiKey, String.class))
+               .thenReturn(responseEntity);
 
         List<WeatherForecastDTO> weatherForecast = weatherForecastService.get5daysWeatherForecastByCity("London", "us");
 
-        Mockito.verify(restTemplate,Mockito.times(1)).getForEntity(apiURL + "?q=London,us&appid=" + apiKey,String.class);
+        Mockito.verify(restTemplate, Mockito.times(1))
+               .getForEntity(apiURL + "?q=London,us&appid=" + apiKey, String.class);
         Assertions.assertThat(weatherForecast).isNotNull().isNotEmpty();
 
     }
 
     @Test(expected = RestClientException.class)
-    public void testIfWeatherForecastIsNotAvailable() throws RestClientException{
+    public void testIfWeatherForecastIsNotAvailable() throws RestClientException {
 
-
-        Mockito.when(restTemplate.getForEntity(apiURL + "?q=London,us&appid=" + apiKey,String.class)).thenThrow(new RestClientException("test message"));
+        Mockito.when(restTemplate.getForEntity(apiURL + "?q=London,us&appid=" + apiKey, String.class))
+               .thenThrow(new RestClientException("test message"));
 
         List<WeatherForecastDTO> weatherForecast = weatherForecastService.get5daysWeatherForecastByCity("London", "us");
 

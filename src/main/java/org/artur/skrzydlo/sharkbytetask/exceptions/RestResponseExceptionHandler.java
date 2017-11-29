@@ -14,12 +14,10 @@ import java.util.Collections;
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-
-
     @ExceptionHandler(NotExistingCityException.class)
-    protected ResponseEntity<Object> handleNotExistingCityException(NotExistingCityException exc){
+    protected ResponseEntity<Object> handleNotExistingCityException(NotExistingCityException exc) {
 
-        ApiValidationError apiValidationError = new ApiValidationError("CITY",exc.getMessage());
+        ApiValidationError apiValidationError = new ApiValidationError("CITY", exc.getMessage());
         apiValidationError.setRejectedValue(exc.getCityChecked());
 
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
@@ -30,13 +28,12 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleException(Exception exc){
+    protected ResponseEntity<Object> handleException(Exception exc) {
 
         ApiError apiError = new ApiError(HttpStatus.UNPROCESSABLE_ENTITY);
         apiError.setMessage(exc.getMessage());
         return buildResponseEntity(apiError);
     }
-
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
