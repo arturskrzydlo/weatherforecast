@@ -1,30 +1,27 @@
 package org.artur.skrzydlo.sharkbytetask.unit;
 
 import com.jayway.jsonpath.Configuration;
-import org.artur.skrzydlo.sharkbytetask.config.TestConfiguration;
+import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import org.artur.skrzydlo.sharkbytetask.dto.WeatherForecastDTO;
 import org.artur.skrzydlo.sharkbytetask.services.WeatherForecastService;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.EnumSet;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConfiguration.class)
 public class WeatherForecastServiceTest {
 
     @Value("${weather.api.appid}")
@@ -39,8 +36,8 @@ public class WeatherForecastServiceTest {
     @Mock
     private RestTemplate restTemplate;
 
-    @SpyBean
-    private Configuration configuration;
+    @Spy
+    private Configuration configuration = buildConfiguration();
 
     @Before
     public void setup() {
@@ -97,4 +94,13 @@ public class WeatherForecastServiceTest {
         Assertions.assertThat(weatherForecast).isNull();
     }
 
+    private Configuration buildConfiguration() {
+
+        return com.jayway.jsonpath.Configuration.builder()
+                                                .jsonProvider(new JacksonJsonProvider())
+                                                .mappingProvider(new JacksonMappingProvider())
+                                                .options(EnumSet.noneOf(Option.class))
+                                                .build();
+    }
 }
+

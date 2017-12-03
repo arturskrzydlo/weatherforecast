@@ -14,10 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -34,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(classes = TestConfiguration.class)
-@ActiveProfiles
 public class CharControllerTest {
 
     private MockMvc mockMvc;
@@ -49,11 +44,7 @@ public class CharControllerTest {
     @Value("${weather.api.request.limit}")
     private int numberOfRequestPerMinute;
 
-    private final static int WEATHER_FREQUENCY_IN_HOURS = 3;
-    final int NUMBER_OF_DAYS = 5;
-    final int HOURS_DAY = 24;
-
-    final int numberOfWeatherForecasts = NUMBER_OF_DAYS * (HOURS_DAY / WEATHER_FREQUENCY_IN_HOURS);
+    final static int NUMBER_OF_WEATHER_FORECAST_DAYS = 5;
 
     @Before
     public void setup() {
@@ -71,12 +62,12 @@ public class CharControllerTest {
 
         Mockito.when(weatherForecastAPI.get5daysWeatherForecastByCity(city, countryCode))
                .thenReturn(Collections.nCopies(
-                       numberOfWeatherForecasts, new WeatherForecastDTO()));
+                       NUMBER_OF_WEATHER_FORECAST_DAYS, new WeatherForecastDTO()));
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + city))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                    .andExpect(jsonPath("$.*").value(hasSize(numberOfWeatherForecasts)))
+                    .andExpect(jsonPath("$.*").value(hasSize(NUMBER_OF_WEATHER_FORECAST_DAYS)))
                     .andReturn();
 
         Mockito.verify(weatherForecastAPI, Mockito.times(1)).get5daysWeatherForecastByCity(city, countryCode);
@@ -102,6 +93,63 @@ public class CharControllerTest {
     }
 
     @Test
+    public void returnNotFoundWhenCityNameSeparatorIsDifferentThanSpace() throws Exception {
+
+        String cityWithUnderscoreSeparator = "New_York";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithUnderscoreSeparator))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.status").isNotEmpty())
+                    .andExpect(jsonPath("$.timestamp").isNotEmpty());
+
+        String cityWithDashSeparator = "New-York";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithDashSeparator))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.status").isNotEmpty())
+                    .andExpect(jsonPath("$.timestamp").isNotEmpty());
+
+        String cityWithNoSeparator = "NewYork";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + cityWithNoSeparator))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.status").isNotEmpty())
+                    .andExpect(jsonPath("$.timestamp").isNotEmpty());
+    }
+
+    @Test
+    public void returnWeatherWithoutAwareOfLetterCase() throws Exception {
+
+        String lowerCaseLetters = "new york";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + lowerCaseLetters))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.status").doesNotExist())
+                    .andExpect(jsonPath("$.message").doesNotExist());
+
+        String toUpperCase = "NEW YORK";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + toUpperCase))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.status").doesNotExist())
+                    .andExpect(jsonPath("$.message").doesNotExist());
+
+        String mixedCases = "NeW yORk";
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/weather/" + toUpperCase))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(jsonPath("$.status").doesNotExist())
+                    .andExpect(jsonPath("$.message").doesNotExist());
+
+    }
+
+    @Test
     public void testRequestPerMinuteLimit() throws Exception {
 
         CityWithCountryCode cityWithCountryCode = CityWithCountryCode.WASHINGTON;
@@ -109,7 +157,7 @@ public class CharControllerTest {
         Mockito.when(weatherForecastAPI
                 .get5daysWeatherForecastByCity(cityWithCountryCode.toString(), cityWithCountryCode.getCountryCode()))
                .thenReturn(Collections.nCopies(
-                       numberOfWeatherForecasts, new WeatherForecastDTO()));
+                       NUMBER_OF_WEATHER_FORECAST_DAYS, new WeatherForecastDTO()));
 
         IntStream.range(0, numberOfRequestPerMinute + 1).forEach(i -> {
             try {

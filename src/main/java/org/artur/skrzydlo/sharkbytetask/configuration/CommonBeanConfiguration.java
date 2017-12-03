@@ -20,7 +20,7 @@ public class CommonBeanConfiguration {
     }
 
     @Bean
-    public com.jayway.jsonpath.Configuration getConfiguration() {
+    public com.jayway.jsonpath.Configuration configurationA() {
 
         return com.jayway.jsonpath.Configuration.builder()
                                                 .jsonProvider(new JacksonJsonProvider())
