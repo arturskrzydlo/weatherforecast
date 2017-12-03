@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest
+@WebMvcTest(controllers = ChartController.class)
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CharControllerTest {
 
@@ -150,7 +150,7 @@ public class CharControllerTest {
     }
 
     @Test
-    public void testRequestPerMinuteLimit() throws Exception {
+    public void testRequestPerMinuteLimit() {
 
         CityWithCountryCode cityWithCountryCode = CityWithCountryCode.WASHINGTON;
 
