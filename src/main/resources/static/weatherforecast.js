@@ -27,18 +27,25 @@ $(document).ready(function () {
 });
 
 
-function handleError(responeJSON) {
+function handleError(error) {
 
+    if (error.responeJSON == undefined) {
 
-    if (responeJSON.subErrors == undefined) {
-        $("#errorMessages").text(responeJSON.message);
+        if (error.status === 429) {
+            $("#errorMessages").text("Rate limit exceeded");
+        }
+
     } else {
-        var messages = "";
-        $(responeJSON.subErrors).each(function (index, item) {
-            messages = message + item.message + "\n";
-        });
+        if (error.responeJSON.subErrors == undefined) {
+            $("#errorMessages").text(error.responeJSON.message);
+        } else {
+            var messages = "";
+            $(error.responeJSON.subErrors).each(function (index, item) {
+                messages = message + item.message + "\n";
+            });
 
-        $("#errorMessages").text(message);
+            $("#errorMessages").text(message);
+        }
     }
 
     $("#errorMessages").css("display", "block");
@@ -79,7 +86,7 @@ function getWeatherForecast(cityName) {
                 pressure.push(item.pressure);
                 humidity.push(item.humidity);
 
-            })
+            });
 
             var tempChart = new Chart(tempCanvas, {
                 type: 'line',
@@ -155,7 +162,7 @@ function getWeatherForecast(cityName) {
 
         },
         error: function (error) {
-            handleError(error.responseJSON);
+            handleError(error);
         }
     })
 }
