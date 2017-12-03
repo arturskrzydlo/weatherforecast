@@ -111,4 +111,21 @@ public class WeatherForCityIT {
 
     }
 
+    @Test
+    public void receivedWeatherWithAllRequiredContent() throws Exception {
+
+        String existingCity = "Washington";
+
+        MvcResult result = mockMvc.perform(get("/weather/" + existingCity))
+                                  .andExpect(MockMvcResultMatchers.status().isOk())
+                                  .andExpect(
+                                          MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                                  .andExpect(jsonPath("$.*.temperature").value(hasSize(numberOfWeatherForecasts)))
+                                  .andExpect(jsonPath("$.*.pressure").value(hasSize(numberOfWeatherForecasts)))
+                                  .andExpect(jsonPath("$.*.humidity").value(hasSize(numberOfWeatherForecasts)))
+                                  .andExpect(jsonPath("$.*.dt").value(hasSize(numberOfWeatherForecasts)))
+                                  .andReturn();
+
+    }
+
 }
